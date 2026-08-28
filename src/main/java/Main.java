@@ -1,7 +1,7 @@
-import repositories.ClienteDAO;
-import repositories.FacturaDAO;
-import repositories.FacturaProductoDAO;
-import repositories.ProductoDAO;
+import dao.ClienteDAO;
+import dao.FacturaDAO;
+import dao.FacturaProductoDAO;
+import dao.ProductoDAO;
 
 import java.sql.SQLException;
 

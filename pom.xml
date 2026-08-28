@@ -21,7 +21,13 @@
             <artifactId>mysql-connector-j</artifactId>
             <version>9.0.0</version>
         </dependency>
-
+        <!--agrego dependencia para usar lombok -->
+        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.38</version>
+        </dependency>
         <!-- Apache Commons CSV, para leer los archivos .csv -->
         <dependency>
             <groupId>org.apache.commons</groupId>
