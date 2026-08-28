@@ -18,7 +18,7 @@ public class MySQLProductoDAO implements ProductoDAO {
 
     private void createTableIfNotExists() {
         final String sql = "CREATE TABLE IF NOT EXISTS productos (" +
-                "idProducto BIGINT PRIMARY KEY AUTO_INCREMENT," +
+                "idProducto INT PRIMARY KEY," +
                 "nombre VARCHAR(100) NOT NULL," +
                 "valor FLOAT NULL" +
                 ")";
@@ -56,14 +56,12 @@ public class MySQLProductoDAO implements ProductoDAO {
 
     @Override
     public void create(Producto producto) {
-        final String sql = "INSERT INTO productos (nombre, valor) VALUES (?, ?)";
-        try(PreparedStatement ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
-            ps.setString(1, producto.getNombre());
-            ps.setFloat(2, producto.getValor());
+        final String sql = "INSERT INTO productos (idProducto, nombre, valor) VALUES (?, ?, ?)";
+        try(PreparedStatement ps = cn.prepareStatement(sql)){
+            ps.setInt(1,producto.getIdProducto());
+            ps.setString(2, producto.getNombre());
+            ps.setFloat(3, producto.getValor());
             ps.executeUpdate();
-            try(ResultSet keys = ps.getGeneratedKeys()){
-                if(keys.next()) producto.setIdProducto(keys.getInt(1));
-            }
         }catch(SQLException e) {
             throw new RuntimeException("Error al insertar producto", e);
         }
@@ -91,6 +89,16 @@ public class MySQLProductoDAO implements ProductoDAO {
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error en delete", e);
+        }
+    }
+
+    @Override
+    public void deleteAll() {
+        final String sql = "DELETE FROM productos";
+        try (Statement st = cn.createStatement()) {
+            st.executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error borrando 'productos'", e);
         }
     }
 

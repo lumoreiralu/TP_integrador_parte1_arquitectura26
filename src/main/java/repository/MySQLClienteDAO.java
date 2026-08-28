@@ -17,9 +17,9 @@ public class MySQLClienteDAO implements ClienteDAO {
 
     private void createTableIfNotExists() {
         final String sql = "CREATE TABLE IF NOT EXISTS clientes (" +
-                "idCliente BIGINT PRIMARY KEY AUTO_INCREMENT," +
+                "idCliente INT PRIMARY KEY," +
                 "nombre VARCHAR(100) NOT NULL," +
-                "email VARCHAR(100) NOT NULL," +
+                "email VARCHAR(100) NOT NULL" +
                 ")";
         try (Statement st = cn.createStatement()) {
             st.execute(sql);
@@ -30,7 +30,7 @@ public class MySQLClienteDAO implements ClienteDAO {
 
 
     @Override
-    public Cliente findById(Integer id) {
+    public Cliente findById(int id) {
         final String sql = "SELECT * FROM clientes WHERE idCliente = ?";
         try(PreparedStatement ps = cn.prepareStatement(sql)){
             ps.setInt(1,id);
@@ -72,7 +72,7 @@ public class MySQLClienteDAO implements ClienteDAO {
 
     @Override
     public List<Cliente> findAll() {
-        final String sql = "SELECT id, nombre, edad FROM clientes";
+        final String sql = "SELECT * FROM clientes";
         List<Cliente> out = new ArrayList<>();
         try (PreparedStatement ps = cn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
@@ -85,25 +85,21 @@ public class MySQLClienteDAO implements ClienteDAO {
 
     @Override
     public void create(Cliente c) {
-        final String sql = "INSERT INTO clientes (nombre, email) VALUES (?, ?)";
-        try (PreparedStatement ps = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-            ps.setString(1, c.getNombre());
-            ps.setString(2, c.getEmail());
-
+        final String sql = "INSERT INTO clientes (idCliente, nombre, email) VALUES (?, ?, ?)";
+        try (PreparedStatement ps = cn.prepareStatement(sql)) {
+            ps.setInt(1, c.getId());
+            ps.setString(2, c.getNombre());
+            ps.setString(3, c.getEmail());
             ps.executeUpdate();
-
-            try (ResultSet keys = ps.getGeneratedKeys()) {
-                if (keys.next()) c.setId(keys.getInt(1));
-            }
         } catch (SQLException e) {
-            throw new RuntimeException("Error en create", e);
+            throw new RuntimeException("Error en create cliente", e);
         }
 
     }
 
     @Override
     public void update(Cliente c) {
-        final String sql = "UPDATE clientes SET nombre = ?, email = ? WHERE id = ?";
+        final String sql = "UPDATE clientes SET nombre = ?, email = ? WHERE idCliente = ?";
         try (PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setString(1, c.getNombre());
             ps.setString(2, c.getEmail());
@@ -117,8 +113,8 @@ public class MySQLClienteDAO implements ClienteDAO {
     }
 
     @Override
-    public void delete(Integer id) {
-        final String sql = "DELETE FROM clientes WHERE id = ?";
+    public void delete(int id) {
+        final String sql = "DELETE FROM clientes WHERE idCliente = ?";
         try (PreparedStatement ps = cn.prepareStatement(sql)) {
             ps.setLong(1, id);
             ps.executeUpdate();
@@ -126,6 +122,16 @@ public class MySQLClienteDAO implements ClienteDAO {
             throw new RuntimeException("Error en delete", e);
         }
 
+    }
+
+    @Override
+    public void deleteAll() {
+        final String sql = "DELETE FROM clientes";
+        try (Statement st = cn.createStatement()) {
+            st.executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error borrando 'clientes'", e);
+        }
     }
 
     // ---- mapper privado ----
@@ -143,4 +149,6 @@ public class MySQLClienteDAO implements ClienteDAO {
 
         return c;
     }
+
+
 }

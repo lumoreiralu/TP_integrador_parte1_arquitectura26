@@ -99,6 +99,16 @@ public class MySQLFacturaProductoDAO implements FacturaProductoDAO {
         }
     }
 
+    @Override
+    public void deleteAll() {
+        final String sql = "DELETE FROM factura_producto";
+        try (Statement st = cn.createStatement()) {
+            st.executeUpdate(sql);
+        } catch (SQLException e) {
+            throw new RuntimeException("Error borrando 'detalles de factura'", e);
+        }
+    }
+
     // ---- mapper privado ----
     private FacturaProducto map(ResultSet rs) throws SQLException {
         FacturaProducto u = new FacturaProducto();

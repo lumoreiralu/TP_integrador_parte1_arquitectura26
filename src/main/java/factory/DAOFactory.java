@@ -85,7 +85,7 @@ public abstract class DAOFactory {
 
     // ------ Factory Methods (contratos por cada DAO de tu dominio) ------
 
-    public abstract ClienteDAO createPersonaDAO();
+    public abstract ClienteDAO createClienteDAO();
     public abstract ProductoDAO createProductoDAO();
     public abstract FacturaDAO createFacturaDAO();
     public abstract FacturaProductoDAO createFacturaProductoDAO();

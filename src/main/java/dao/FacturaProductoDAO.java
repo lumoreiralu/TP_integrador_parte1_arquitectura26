@@ -10,4 +10,5 @@ public interface FacturaProductoDAO  {
     void create(FacturaProducto producto);
     void update(FacturaProducto producto);
     void delete(FacturaProducto producto);
+    void deleteAll();
 }

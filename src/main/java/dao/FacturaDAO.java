@@ -11,5 +11,5 @@ public interface FacturaDAO  {
     void create(Factura factura);
     void update(Factura factura);
     void delete(Factura factura);
-
+    void deleteAll();
 }

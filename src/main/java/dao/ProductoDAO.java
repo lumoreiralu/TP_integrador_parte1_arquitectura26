@@ -10,5 +10,5 @@ public interface ProductoDAO {
     void create(Producto producto);
     void update(Producto producto);
     void delete(Producto producto);
-
+    void deleteAll();
 }

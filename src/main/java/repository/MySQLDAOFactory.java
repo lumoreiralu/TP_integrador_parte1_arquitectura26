@@ -13,7 +13,7 @@ import factory.DAOFactory;
 public class MySQLDAOFactory extends DAOFactory { // <— EXTENDS DAOFactory
 
     @Override
-    public ClienteDAO createPersonaDAO() {
+    public ClienteDAO createClienteDAO() {
         return new MySQLClienteDAO(getConnection());
     }
 
