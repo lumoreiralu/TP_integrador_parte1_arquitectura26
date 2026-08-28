@@ -33,15 +33,15 @@ src/
 ```
 
 
-###2. Base de Datos en MySQL
+### 2. Base de Datos en MySQL
 CREATE DATABASE IF NOT EXISTS db_cliente_factura;
 
-###3 Cambio de Motor de Base de Datos
+### 3. Cambio de Motor de Base de Datos
 El switcheo entre motores se maneja desde una única constante en la clase Main.java:
 // Cambiar a DBType.DERBY o DBType.MYSQL según el caso
 private static final DBType MOTOR = DBType.MYSQL;
 
-###4 Reglas Importantes de Desarrollo
+### 4. Reglas Importantes de Desarrollo
 Estructura de Tablas (DDL):
 Todos los IDs (idCliente, idProducto, idFactura) se manejan como INT (sin AUTO_INCREMENT), ya que provienen directamente de los datasets CSV.
 Si agregas o modificas una Foreign Key, asegúrate de mantener exactamente el mismo tipo de dato en la tabla referenciada.
@@ -49,7 +49,7 @@ Orden de Borrado y Carga de Datos:
 Borrado (BorrarDatos): Primero las tablas hijas/de relación (factura_producto, facturas) y al final las independientes (productos, clientes).
 Carga (CargarDatosIniciales): Primero las tablas independientes (clientes, productos) y al final las dependientes (facturas, factura_producto).
 
-###5 Ejecución del Proyecto
+### 5. Ejecución del Proyecto
 Ejecuta la clase Main.java. El flujo automatizado realizará:
 Selección y publicación del motor de base de datos.
 Limpieza de tablas existentes.
