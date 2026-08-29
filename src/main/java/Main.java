@@ -6,6 +6,7 @@ import dao.ProductoDAO;
 import dao.FacturaDAO;
 import entity.Factura;
 import entity.Producto;
+import entity.ProductoRecaudacion;
 import entity.FacturaProducto;
 import factory.DAOFactory;
 import factory.DBType;
@@ -70,7 +71,7 @@ public class Main {
             // Ejemplo: obtener el producto que más recaudó (Punto 3 del TP)
             //Producto masRecaudó = productoDAO.getProductoMasRecaudado();
             //System.out.println("Producto que más recaudó: " + masRecaudó);
-
+            
             // Ejemplo: listar clientes ordenados por facturación (Punto 4 del TP)
             //System.out.println("\nLista de clientes ordenada por facturación:");
             //for (Cliente c : clienteDAO.getClientesOrdenadosPorFacturacion()) {

@@ -2,6 +2,7 @@ package repository;
 import entity.Factura;
 import dao.ProductoDAO;
 import entity.Producto;
+import entity.ProductoRecaudacion;
 
 import java.sql.*;
 import java.util.*;
@@ -100,7 +101,35 @@ public class MySQLProductoDAO implements ProductoDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error borrando 'productos'", e);
         }
+    }  
+
+    @Override
+    public ProductoRecaudacion findTopRevenueProduct() {
+        final String sql = "SELECT p.idProducto, p.nombre, p.valor, SUM(fp.cantidad * p.valor) as revenue " +
+                "FROM productos p " +
+                "JOIN factura_producto fp ON p.idProducto = fp.idProducto " +
+                "GROUP BY p.idProducto, p.nombre, p.valor " +
+                "ORDER BY revenue DESC " +
+                "LIMIT 1";
+        try (PreparedStatement ps = cn.prepareStatement(sql);
+                ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        return new ProductoRecaudacion(
+                                rs.getInt("idProducto"),
+                                rs.getString("nombre"),
+                                rs.getFloat("valor"),
+                                rs.getFloat("revenue")
+                        );
+                    } else {
+                        return null; // No hay productos
+                    }
+                }
+        catch (SQLException e) {
+            throw new RuntimeException("Error al buscar el producto con mayor ingreso", e);
+        }
     }
+            
+        
 
     // ---- mapper privado ----
     private Producto map(ResultSet rs) throws SQLException {
