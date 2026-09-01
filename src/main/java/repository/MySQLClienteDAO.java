@@ -1,14 +1,27 @@
 package repository;
 import entity.Cliente;
 import dao.ClienteDAO;
+import entity.Producto;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementación de acceso a datos para la entidad {@link Cliente} utilizando MySQL.
+ * Provee operaciones CRUD básicas y consultas de agregación.
+ *
+ *
+ * @version 1.0
+ */
 
 public class MySQLClienteDAO implements ClienteDAO {
     private final Connection cn;
+    /**
+     * Construye una nueva instancia del DAO y crea la tabla si no existe.
+     *
+     * @param cn Conexión activa a la base de datos MySQL.
+     */
 
     public MySQLClienteDAO(Connection cn) {
         this.cn = cn;
@@ -116,7 +129,7 @@ public class MySQLClienteDAO implements ClienteDAO {
     public void delete(int id) {
         final String sql = "DELETE FROM clientes WHERE idCliente = ?";
         try (PreparedStatement ps = cn.prepareStatement(sql)) {
-            ps.setLong(1, id);
+            ps.setInt(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error en delete", e);
@@ -137,14 +150,11 @@ public class MySQLClienteDAO implements ClienteDAO {
     // ---- mapper privado ----
     private Cliente map(ResultSet rs) throws SQLException {
         Cliente c = new Cliente();
-
-        // 1. Asignar el ID (int)
+        // 1. Asigna el ID (int)
         c.setId(rs.getInt("idCliente"));
-
-        // 2. Asignar el Nombre (String)
+        // 2. Asigna el Nombre (String)
         c.setNombre(rs.getString("nombre"));
-
-        // 3. Asignar el Email / Valor (según los campos que tenga tu clase Cliente)
+        // 3. Asigna el Email
         c.setEmail(rs.getString("email"));
 
         return c;

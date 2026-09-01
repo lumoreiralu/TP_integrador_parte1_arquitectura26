@@ -6,11 +6,23 @@ import entity.ProductoRecaudacion;
 
 import java.sql.*;
 import java.util.*;
-
+/**
+ * Implementación de acceso a datos para la entidad {@link Producto} utilizando MySQL.
+ * Provee operaciones CRUD básicas y consultas de agregación.
+ *
+ *
+ * @version 1.0
+ */
 
 public class MySQLProductoDAO implements ProductoDAO {
 
     private final Connection cn;
+
+    /**
+     * Construye una nueva instancia del DAO y crea la tabla si no existe.
+     *
+     * @param cn Conexión activa a la base de datos MySQL.
+     */
 
     public MySQLProductoDAO(Connection cn) {
         this.cn = cn;
@@ -29,6 +41,16 @@ public class MySQLProductoDAO implements ProductoDAO {
             throw new RuntimeException("Error creando tabla 'productos'", e);
         }
     }
+
+    /**
+     * Busca un producto por su clave primaria.
+     *
+     * @param id Identificador único del producto.
+     * @return El {@link Producto} encontrado, o {@code null} si no existe.
+     * @throws RuntimeException Si ocurre un error de acceso a datos (SQLException).
+     */
+
+
     @Override
     public Producto findById(int id) {
         final String sql = "SELECT * FROM productos WHERE idProducto = ?";
@@ -75,6 +97,7 @@ public class MySQLProductoDAO implements ProductoDAO {
         try(PreparedStatement ps = cn.prepareStatement(sql)){
             ps.setString(1, producto.getNombre());
             ps.setFloat(2, producto.getValor());
+            ps.setInt(3, producto.getIdProducto());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error al modificar el producto", e);
@@ -84,9 +107,9 @@ public class MySQLProductoDAO implements ProductoDAO {
 
     @Override
     public void delete(Producto producto) {
-        final String sql = "DELETE FROM productos WHERE id = ?";
+        final String sql = "DELETE FROM productos WHERE idProducto = ?";
         try (PreparedStatement ps = cn.prepareStatement(sql)) {
-            ps.setLong(1, producto.getIdProducto());
+            ps.setInt(1, producto.getIdProducto());
             ps.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException("Error en delete", e);
@@ -101,7 +124,16 @@ public class MySQLProductoDAO implements ProductoDAO {
         } catch (SQLException e) {
             throw new RuntimeException("Error borrando 'productos'", e);
         }
-    }  
+    }
+
+    /**
+     * Obtiene el producto que generó la mayor recaudación histórica acumulada.
+     *
+     * @return Objeto {@link ProductoRecaudacion} con los datos del producto y el total facturado,
+     *         o {@code null} si no hay registros asociados.
+     * @throws RuntimeException Si falla la consulta SQL.
+     */
+
 
     @Override
     public ProductoRecaudacion findTopRevenueProduct() {
@@ -132,11 +164,18 @@ public class MySQLProductoDAO implements ProductoDAO {
         
 
     // ---- mapper privado ----
+    /**
+     * Transforma el registro actual del {@link ResultSet} en una instancia de {@link Producto}.
+     *
+     * @param rs El conjunto de resultados posicionado en la fila a mapear.
+     * @return Una nueva instancia de {@link Producto} con los datos de la fila.
+     * @throws SQLException Si ocurre un error al acceder a las columnas en la base de datos.
+     */
     private Producto map(ResultSet rs) throws SQLException {
         Producto u = new Producto();
         u.setIdProducto(rs.getInt("idProducto"));
         u.setNombre(rs.getString("nombre"));
-        float valor = rs.getInt("valor");
+        u.setValor(rs.getFloat("valor"));
         return u;
     }
 }

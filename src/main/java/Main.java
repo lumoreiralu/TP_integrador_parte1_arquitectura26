@@ -68,15 +68,28 @@ public class Main {
             Factura fa1 =  facturaDAO.findById(1);
             System.out.println("Producto 1: " + pr1 + " Cliente: " + cl1 + " Factura: " + fa1);
 
-            // Ejemplo: obtener el producto que más recaudó (Punto 3 del TP)
-            //Producto masRecaudó = productoDAO.getProductoMasRecaudado();
-            //System.out.println("Producto que más recaudó: " + masRecaudó);
-            
-            // Ejemplo: listar clientes ordenados por facturación (Punto 4 del TP)
-            //System.out.println("\nLista de clientes ordenada por facturación:");
-            //for (Cliente c : clienteDAO.getClientesOrdenadosPorFacturacion()) {
-            //   System.out.println(c);
-            //}
+            Producto p1 =  productoDAO.findById(16);
+            System.out.println("Producto 16: " + p1.getNombre() );
+            p1.setNombre("Prueba");
+            System.out.println("Nuevo nombre: " + p1.getNombre());
+
+            Cliente cl12 =  clienteDAO.findById(12);
+            System.out.println("Cliente 12: " + cl12.getNombre());
+            cl12.setNombre("Prueba");
+            System.out.println("Nuevo nombre: " + cl12.getNombre());
+
+            Producto nuevo = new Producto();
+            nuevo.setNombre("1000");
+            nuevo.setNombre("Prueba 1111");
+            nuevo.setValor(200);
+            productoDAO.create(nuevo);
+            Producto guardado =  productoDAO.findById(1000);
+            System.out.println("Producto nuevo: " + nuevo.getNombre());
+
+            Factura fa2 =  facturaDAO.findById(11);
+            System.out.println("Factura fa2 tiene como cliente a: " + fa2.getIdCliente());
+            fa2.setIdCliente(10);
+            System.out.println("Factura fa2 ahora tiene como cliente a: " + fa2.getIdCliente());
 
         } catch (Exception e) {
             System.err.println("Error ejecutando consultas de prueba: " + e.getMessage());
@@ -86,6 +99,8 @@ public class Main {
         // Cierre de la base. Polimorfico: Main no sabe que motor hay debajo.
         // Con Derby esto es OBLIGATORIO (si no, la base queda en estado inconsistente).
         f.shutdown();
+
+
 
     }
 }

@@ -5,6 +5,8 @@ import entity.ProductoRecaudacion;
 
 import java.util.List;
 
+
+
 public interface ProductoDAO {
     Producto findById(int id);
     List<Producto> findAll();
