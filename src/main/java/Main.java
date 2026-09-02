@@ -39,7 +39,7 @@ public class Main {
          *
          * Publicamos el motor elegido como system property para que TODOS los que llamen
          * a DAOFactory.getInstance() sin parámetro resuelvan lo mismo.
-         *
+        *
          * Si además se pasa -Ddb.type=MYSQL por línea de comandos, ese valor gana:
          * permite switchear sin recompilar.
          */
