@@ -1,13 +1,12 @@
 
 import dao.ClienteDAO;
+import dto.ProductoRecaudadoDTO;
 import entity.Cliente;
 import dao.FacturaProductoDAO;
 import dao.ProductoDAO;
 import dao.FacturaDAO;
 import entity.Factura;
 import entity.Producto;
-import entity.ProductoRecaudacion;
-import entity.FacturaProducto;
 import factory.DAOFactory;
 import factory.DBType;
 import utils.BorrarDatos;
@@ -60,6 +59,8 @@ public class Main {
         FacturaDAO facturaDAO = f.createFacturaDAO();
         FacturaProductoDAO facturaProductoDAO = f.createFacturaProductoDAO();
 
+        ProductoRecaudadoDTO productoRecaudado =productoDAO.findTopRevenueProduct();
+
         // 5. Ejemplo para probar el funcionamiento del sistema
         try {
             System.out.println("\n--- PRUEBA DE CONSULTAS ---");
@@ -85,6 +86,14 @@ public class Main {
             productoDAO.create(nuevo);
             Producto guardado =  productoDAO.findById(1000);
             System.out.println("Producto nuevo: " + nuevo.getNombre());
+
+            if (productoRecaudado != null) {
+                System.out.println("Producto con mayor recaudación:");
+                System.out.println("ID: " + productoRecaudado.getIdProducto());
+                System.out.println("Nombre: " + productoRecaudado.getNombre());
+                System.out.println("Valor: " + productoRecaudado.getValor());
+                System.out.println("Recaudación: " + productoRecaudado.getRecaudacion());
+            }
 
             Factura fa2 =  facturaDAO.findById(11);
             System.out.println("Factura fa2 tiene como cliente a: " + fa2.getIdCliente());

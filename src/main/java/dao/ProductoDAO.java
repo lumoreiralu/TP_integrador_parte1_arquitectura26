@@ -1,10 +1,8 @@
 package dao;
 
 import entity.Producto;
-import entity.ProductoRecaudacion;
-
 import java.util.List;
-
+import dto.ProductoRecaudadoDTO;
 
 
 public interface ProductoDAO {
@@ -14,5 +12,5 @@ public interface ProductoDAO {
     void update(Producto producto);
     void delete(Producto producto);
     void deleteAll();
-    ProductoRecaudacion findTopRevenueProduct();
+    ProductoRecaudadoDTO findTopRevenueProduct();
 }

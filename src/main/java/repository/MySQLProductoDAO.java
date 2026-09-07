@@ -1,8 +1,7 @@
 package repository;
-import entity.Factura;
 import dao.ProductoDAO;
+import dto.ProductoRecaudadoDTO;
 import entity.Producto;
-import entity.ProductoRecaudacion;
 
 import java.sql.*;
 import java.util.*;
@@ -129,14 +128,14 @@ public class MySQLProductoDAO implements ProductoDAO {
     /**
      * Obtiene el producto que generó la mayor recaudación histórica acumulada.
      *
-     * @return Objeto {@link ProductoRecaudacion} con los datos del producto y el total facturado,
+     * @return Objeto {@link ProductoRecaudadoDTO } con los datos del producto y el total facturado,
      *         o {@code null} si no hay registros asociados.
      * @throws RuntimeException Si falla la consulta SQL.
      */
 
 
     @Override
-    public ProductoRecaudacion findTopRevenueProduct() {
+    public ProductoRecaudadoDTO findTopRevenueProduct() {
         final String sql = "SELECT p.idProducto, p.nombre, p.valor, SUM(fp.cantidad * p.valor) as revenue " +
                 "FROM productos p " +
                 "JOIN factura_producto fp ON p.idProducto = fp.idProducto " +
@@ -146,7 +145,7 @@ public class MySQLProductoDAO implements ProductoDAO {
         try (PreparedStatement ps = cn.prepareStatement(sql);
                 ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
-                        return new ProductoRecaudacion(
+                        return new ProductoRecaudadoDTO(
                                 rs.getInt("idProducto"),
                                 rs.getString("nombre"),
                                 rs.getFloat("valor"),

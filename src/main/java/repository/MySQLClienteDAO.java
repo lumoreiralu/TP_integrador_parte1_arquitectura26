@@ -147,6 +147,21 @@ public class MySQLClienteDAO implements ClienteDAO {
         }
     }
 
+    @Override
+    public List<Cliente> getListaClientesORDFactura() {
+        final String sql = "SELECT c.* FROM clientes c JOIN factura f ON (c.id=f.idCliente) " +
+                "           GROUP BY c.id " +
+                "           ORDER BY COUNT(*) DESC";
+        List<Cliente> salida = new ArrayList<>();
+        try (PreparedStatement ps = cn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) salida.add(map(rs));
+        } catch (SQLException e) {
+            throw new RuntimeException("Error en findAll", e);
+        }
+        return salida;
+    }
+
     // ---- mapper privado ----
     private Cliente map(ResultSet rs) throws SQLException {
         Cliente c = new Cliente();
