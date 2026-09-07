@@ -72,10 +72,10 @@ public class Main {
             //System.out.println("Producto que más recaudó: " + masRecaudó);
 
             // Ejemplo: listar clientes ordenados por facturación (Punto 4 del TP)
-            //System.out.println("\nLista de clientes ordenada por facturación:");
-            //for (Cliente c : clienteDAO.getClientesOrdenadosPorFacturacion()) {
-            //   System.out.println(c);
-            //}
+            System.out.println("\nLista de clientes ordenada por facturación:");
+            for (Cliente c : clienteDAO.getListaClientesORDFactura()) {
+               System.out.println(c);
+            }
 
         } catch (Exception e) {
             System.err.println("Error ejecutando consultas de prueba: " + e.getMessage());
