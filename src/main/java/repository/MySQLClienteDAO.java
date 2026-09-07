@@ -148,28 +148,30 @@ public class MySQLClienteDAO implements ClienteDAO {
     }
 
     @Override
-    public List<Cliente> getListaClientesORDFactura() {
-        final String sql = "SELECT c.* FROM clientes c JOIN factura f ON (c.id=f.idCliente) " +
-                "           GROUP BY c.id " +
-                "           ORDER BY COUNT(*) DESC";
-        List<Cliente> salida = new ArrayList<>();
+    public List<Cliente> getListaClientesORDFactura(){
+    final String sql = "SELECT c.*, COUNT(f.idFactura) AS cantidad_facturas FROM clientes c JOIN facturas f ON f.idCliente = c.idCliente GROUP BY c.idCliente,c.nombre ORDER BY cantidad_facturas DESC";
+    List<Cliente> out = new ArrayList<>();
         try (PreparedStatement ps = cn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
-            while (rs.next()) salida.add(map(rs));
-        } catch (SQLException e) {
-            throw new RuntimeException("Error en findAll", e);
-        }
-        return salida;
+    ResultSet rs = ps.executeQuery()) {
+        while (rs.next()) out.add(map(rs));
+    } catch (SQLException e) {
+        throw new RuntimeException("Error en findAll", e);
     }
+        return out;
+}
+
 
     // ---- mapper privado ----
     private Cliente map(ResultSet rs) throws SQLException {
         Cliente c = new Cliente();
-        // 1. Asigna el ID (int)
+
+        // 1. Asignar el ID (int)
         c.setId(rs.getInt("idCliente"));
-        // 2. Asigna el Nombre (String)
+
+        // 2. Asignar el Nombre (String)
         c.setNombre(rs.getString("nombre"));
-        // 3. Asigna el Email
+
+        // 3. Asignar el Email / Valor (según los campos que tenga tu clase Cliente)
         c.setEmail(rs.getString("email"));
 
         return c;
