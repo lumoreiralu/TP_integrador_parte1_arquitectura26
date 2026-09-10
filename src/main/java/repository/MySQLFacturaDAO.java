@@ -2,13 +2,27 @@ package repository;
 
 import entity.Factura;
 import dao.FacturaDAO;
+import entity.Producto;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implementación de acceso a datos para la entidad {@link Factura} utilizando MySQL.
+ * Provee operaciones CRUD básicas y consultas de agregación.
+ *
+ *
+ * @version 1.0
+ */
+
 public class MySQLFacturaDAO implements FacturaDAO {
     private final Connection cn;
+    /**
+     * Construye una nueva instancia del DAO y crea la tabla si no existe.
+     *
+     * @param cn Conexión activa a la base de datos MySQL.
+     */
 
     public MySQLFacturaDAO(Connection cn) {
         this.cn = cn;
